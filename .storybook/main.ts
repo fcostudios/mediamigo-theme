@@ -7,6 +7,13 @@ const config: StorybookConfig = {
         name: "@storybook/react-vite",
         options: {}
     },
-    staticDirs: ["../public"]
+    staticDirs: ["../public"],
+    viteFinal: async (config) => {
+        // Import Tailwind plugin dynamically to avoid CommonJS issues
+        const { default: tailwind } = await import("@tailwindcss/vite");
+        config.plugins = config.plugins || [];
+        config.plugins.push(tailwind());
+        return config;
+    }
 };
 export default config;
